@@ -1,0 +1,15 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Masuk · Absensi Karyawan</title><link rel="stylesheet" href="style.css"></head>
+<body><main class="login"><h1>Absensi Karyawan</h1><p class="muted">Masuk dengan Username dan kata sandi Anda.</p>
+<form id="f" class="card"><label for="nik">Username</label><input id="nik" autocomplete="username" required><label for="pw">Kata sandi</label><input id="pw" type="password" autocomplete="current-password" required>
+<p id="err" class="err" role="alert"></p><button class="btn" style="width:100%">Masuk</button></form></main>
+<script>
+document.getElementById('f').onsubmit = async (e) => {
+  e.preventDefault(); const err = document.getElementById('err'); err.textContent = '';
+  try {
+    const r = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nik: nik.value, password: pw.value }) });
+    const j = await r.json(); if (!r.ok) throw new Error(j.error);
+    localStorage.setItem('absen_token', j.token); location.href = j.role === 'admin' ? '/admin.html' : '/karyawan.html';
+  } catch (x) { err.textContent = x.message; }
+};
+if (localStorage.getItem('absen_token')) fetch('/api/me', { headers: { Authorization: 'Bearer ' + localStorage.getItem('absen_token') } }).then((r) => r.ok ? r.json() : null).then((m) => { if (m) location.href = m.user.role === 'admin' ? '/admin.html' : '/karyawan.html'; });
+</script></body></html>

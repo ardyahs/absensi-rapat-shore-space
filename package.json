@@ -1,0 +1,12 @@
+{
+  "name": "absensi-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Absensi karyawan via foto selfie dan lokasi GPS, dengan reward dan pinalti",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test server/rules.test.js"
+  },
+  "engines": { "node": ">=18" }
+}
